@@ -30,6 +30,26 @@ def solution(m: int, n: int, l: int, haunters: List[int], animals: List[Tuple[in
     return cnt
 
 
+def solution_practice(m: int, n: int, l: int, haunters: List[int], animals: List[int]) -> int:
+    haunters.sort()
+    count = 0
+    for x, y in animals:
+        if y > l:
+            continue
+        start, end = x + y - l, x - y + l
+        lo, hi = 0, len(haunters)
+        while lo <= hi:
+            mid = lo + (hi - lo) // 2
+            if start <= haunters[mid] <= end:
+                count += 1
+                break
+            if haunters[mid] < start:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return count
+
+
 m, n, l = map(int, input().split())
 haunters = list(map(int, input().split()))
 read = stdin.readline
