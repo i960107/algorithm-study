@@ -22,7 +22,7 @@ def bfs(start_v):
         v = queue.popleft()
 
         for i in graph[v]:
-            if not visited[i]:
+            if not visited[i]: # 큐에 방문하기 전에 확인 -> 큐에 넣은 거 자체가 방문 한 것
                 cnt += 1
                 visited[i] = True
                 queue.append(i)
@@ -46,11 +46,16 @@ print(*result)
 def bfs(start_v):
     queue = deque()
     queue.append(start_v)
-    cnt = 1
+    cnt = 0
     visited = [False for _ in range(n+1)]
 
     while queue:
         v = queue.popleft()
+
+        if visited[v]: # 큐에서 뺀 이후에 visited 처리 -> 큐에서 빠질 때 방문하는 것
+            continue
+
+        cnt += 1
         visited[v] = True
 
         for i in graph[v]:
