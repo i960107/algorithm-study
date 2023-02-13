@@ -28,6 +28,7 @@ def solution(tickets: List[List[str]]) -> List[str]:
     return path
 
 
+# 반목문으로 처리할 수 있을까?
 def dfs(curr, n: int, adj, used: Set[str], path: List[str]) -> bool:
     curr, curr_ticket_id = curr
 

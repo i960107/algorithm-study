@@ -3,7 +3,8 @@ from typing import List
 
 def solution(n: int, m: int, lectures: List[int]) -> int:
     # lo, hi의 범위
-    lo, hi = max(lectures), sum(lectures)
+    lo, hi = 1, sum(lectures)
+    # lo, hi = max(lectures), sum(lectures)
     answer = 0
     while lo <= hi:
         mid = lo + (hi - lo) // 2

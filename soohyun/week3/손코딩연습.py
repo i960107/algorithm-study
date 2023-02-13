@@ -25,6 +25,32 @@ def bfs(adj: Dict[int, List[int]], start: int) -> List[int]:
     return visited_nodes
 
 
+def bfs_version2(adj: Dict[int, List[int]], start: int) -> List[int]:
+    # 해인 버전
+    queue = deque()
+    visited_nodes = []
+    visited = set()
+
+    # (node, distance)로 저장
+    visited[start] = True
+    queue.append((start, 0))
+    # 주의! queue에 삽입하기 전에 방문처리
+
+    while queue:
+        curr, distance = queue.popleft()
+
+        if curr in visited:
+            continue
+
+        visited_nodes.append(curr)
+        visited.add(curr)
+
+        for next in adj[curr]:
+            queue.append((next, distance + 1))
+
+    return visited_nodes
+
+
 def dfs_recursive(adj: Dict[int, List[int]], node: int, visited: Set[int]) -> List[int]:
     if node in visited:
         return []
