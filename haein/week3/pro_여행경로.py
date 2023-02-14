@@ -1,45 +1,36 @@
-from collections import deque
+from collections import defaultdict, deque
 def solution(tickets):
     answer = []
-    destinations = {}  # {'ICN': ['SFO', 'ATL'], 'SFO': ['ATL'], 'ATL': ['ICN', 'SFO']}
+    destinations = defaultdict(list)
     visited = []
+    result = []
 
+    ticket_number = 0
     for a, b in tickets:
-        if a not in destinations.keys() or b not in destinations.keys():
-            destinations[a] = [(b, False)]
-            destinations[b] = []
-        else:
-            destinations[a].append((b, False))
+        ticket_number += 1
+        destinations[a].append((b,ticket_number))
+
+    for i in destinations:
+        destinations[i].sort(key = lambda x : x[0])
 
     def bfs(v):
+        nonlocal result
         queue = deque([v])
-        visited.append('ICN')
+        result = [v]
 
         while queue:
-            start = queue.popleft() # 'ICN'
-            # start : [(a, False)]
-            # ATL : [(ICN, True), (SFO, False)]
-            # 'ATL': [('ICN', False), ('SFO', False)]}
-            for a, b in destinations[start]: # 'SFO', 'ATL'
-                if a not in visited:
-                    # if not b:
-                    #     for k, t in destinations[a]:
-                    #         if k == start:
-                    #             # destinations[a].remove((k, False))
-                    #             destinations[a].append((k, True))
-                    # if not b:
-                    # destinations[a].remove((a, False))
-                    destinations[a].append((a, True))
-                    visited.append(a)
-                    queue.append(a)
-                else:
-                    if b == False:
-                        visited.append(a)
-                        queue.append(a)
+            start = queue.popleft()
 
+            for a, num in destinations[start]: # 하나의 경로를 계속 파고 드는 게 아니라 인접한 것들을 돌면서 visited 처리가 됨
+                print(start, a, num, visited, result)
+                if num not in visited:
+                    result.append(a)
+                    visited.append(num)
+                    queue.append(a)
 
     bfs('ICN')
     print(destinations)
-    print(visited)
+    print(result)
+
 
     return answer
