@@ -62,12 +62,14 @@ def get_required_count_to_cover_all_counter_clockwise(n: int, start: int, weak: 
 
 
 # 이건 counter_clockwise고려하지 않은 것 아닌가?
+# 모든 친구들이 같은 방향으로 돌 필요는 없음.
 def solution(n, weak, dist):
-
     W, F = len(weak), len(dist)
     repair_lst = [()]  # 현재까지 고칠 수 있는 취약점들 저장 (1,2,3)
     count = 0  # 투입친구 수
-    dist.sort(reverse=True) # 움직일 수 있는 거리가 큰 친구 순서대로
+    dist.sort(reverse=True)  # 움직일 수 있는 거리가 큰 친구 순서대로
+    # dist.sort() # 실패 왜지.. 모든 가능한 경우 중에서 투입 친구 수가 가장 적은 수를 구해야 하기 때문에...
+    # greedy하게 생각해서 가장 긴 거리를 이동할 수 있는 친구를 가장 먼저 투입하는 것이 나음
 
     # 고칠 수 있는 것들 리스트 작성
     for can_move in dist:
@@ -75,9 +77,11 @@ def solution(n, weak, dist):
         count += 1
 
         # 수리 가능한 지점 찾기
+        # A -> B로 도나, B->A로 도나 같은 경우임...
+        # 시계 방향을 커버할 수 있는 경우만 생각
         for i, wp in enumerate(weak):
             start = wp  # 각 위크포인트부터 시작
-            ends = weak[i:] + [n+w for w in weak[:i]]  # 시작점 기준 끝 포인트 값 저장
+            ends = weak[i:] + [n + w for w in weak[:i]]  # 시작점 기준 끝 포인트 값 저장
             can = [end % n for end in ends if end -
                    start <= can_move]  # 가능한 지점 저장
             repairs.append(set(can))
@@ -94,8 +98,42 @@ def solution(n, weak, dist):
 
     return -1
 
+
+def solution2(n: int, weak: List[int], dist: List[int]) -> int:
+    W = len(weak)
+    F = len(dist)
+
+    count = 0
+    dist.sort(reverse=True)
+    repair_combi = [set()]
+
+    for d in dist:
+        count += 1
+
+        # 가장 처음에 repair_combi == []일때 주의! 빈 set 넣어주기
+        repairs = []
+        for w in weak:
+            start = w
+            repairs.append(
+                set([point for point in weak if (point - start if start <= point else n - start + point) <= d]))
+
+        new_repair_combi = []
+        for prev in repair_combi:
+            for curr in repairs:
+                combi = prev | curr
+                if len(combi) == W:
+                    return count
+                new_repair_combi.append(combi)
+        repair_combi = new_repair_combi
+
+    return -1
+
+
 # print(solution(12, [1, 5, 6, 10], [1, 2, 3, 4]))
-print(solution_fail(12, [0, 1, 5, 6, 10], [1, 2, 3, 4]))
-print(solution(12, [0, 1, 5, 6, 10], [1, 2, 3, 4]))
+# print(solution_fail(12, [0, 1, 5, 6, 10], [1, 2, 3, 4]))
+# print(solution(12, [0, 1, 5, 6, 10], [1, 2, 3, 4]))
 # print(solution(12, [1, 3, 4, 9, 10], [3, 5, 7]))
 # print(solution(12, [12], [1]))
+
+print(solution2(12, [1, 5, 6, 10], [1, 2, 3, 4]))
+print(solution2(12, [1, 3, 4, 9, 10], [3, 5, 7]))
