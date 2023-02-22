@@ -24,5 +24,19 @@ def bfs(start_v, start_cnt):
     # while문 다음에 return 달아주기!
     return 'use the stairs'
 
-print(bfs(s, 0))
+answer = bfs(s, 0)
+print(answer)
 
+'''
+고민했던 부분 
+1. 시간 초과 -> 계산 결과 반복 안하도록 visited 처리
+visited를 써서 이미 계산된 결과에 대해 다시 그것을 구하는 최단 거리를 반복하지 않도록 해줘야 함
+그런데 어떻게 계산 거리를 visited로 처리해주어야 하나?
+-> 어차피 계산 결과는 1 ~ f 이하의 수 중 하나 이므로 visited = [False for _ in range(f+1)]
+
+2. while문 내에서 답이 나오지 않을 때 -> print문 대신 함수 return문의 활용으로 종료
+처음에는 타겟을 발견하면 print로 종료시켜주었음
+그러나 그렇게 하니 while문 내에서 타겟을 발견하지 못했을 때 어떻게 해줘야 할지 모르겠었음
+그러면 print가 아니라 return문을 써야 함! (앞으로도 함수의 리턴문을 적극적으로 쓰자)
+타겟 발견시 bfs()의 리턴값을 해당 cnt로 하고, 만약 while 내부에서 타겟 미발견 시엔 그 밖에 return을 두어서 해결함
+'''
