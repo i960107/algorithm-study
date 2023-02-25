@@ -3,6 +3,7 @@ from typing import List
 
 def solution(m: int, n: int, puddles: List[List[int]]) -> int:
     dp = [[0] * m for _ in range(n)]
+    # passable 따로 안 두고, dp -1두고, -1이라면 0으로 바꿔줄 수도 있음! 메모리따로 필요 없음.
     passable = [[True] * m for _ in range(n)]
     for x, y in puddles:
         passable[y - 1][x - 1] = False
@@ -22,8 +23,8 @@ def solution(m: int, n: int, puddles: List[List[int]]) -> int:
             if not passable[r][c]:
                 dp[r][c] = 0
                 continue
-            dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
-    print(dp)
+            # 경로 수 자체는 나머지로 기록하기
+            dp[r][c] = (dp[r - 1][c] + dp[r][c - 1]) % 1000000007
     return dp[n - 1][m - 1] % 1000000007
 
 
