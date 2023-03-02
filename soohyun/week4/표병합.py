@@ -11,6 +11,8 @@ def solution(commands: List[str]) -> List[str]:
         area_id = board[r][c]
         return value_d[area_id] if area_id in value_d else "EMPTY"
 
+    # 연결된 구역 모두 바뀌어야함
+    # 매번 O(N^2) 탐색해주어야함
     def merge(r1: int, c1: int, r2: int, c2: int):
         r1, r2, c1, c2 = int(r1), int(r2), int(c1), int(c2)
         if r1 == r2 and c1 == c2:
@@ -20,7 +22,10 @@ def solution(commands: List[str]) -> List[str]:
         if target_id in value_d:
             target_value = value_d.pop(target_id)
         area_id = board[r1][c1]
-        board[r2][c2] = area_id
+        for r in range(1, 51):
+            for c in range(1, 51):
+                if board[r][c] == target_id:
+                    board[r][c] = area_id
         if area_id not in value_d and target_value:
             value_d[area_id] = target_value
 
@@ -76,6 +81,7 @@ def solution(commands: List[str]) -> List[str]:
 #      "PRINT 1 1", "UNMERGE 2 2", "PRINT 1 1"]))
 
 # 반례 -> 이미 병합된 셀을 다시 병합할때, 그 전체 영역이 하나의 영역이 되는게 아님
+# 답은 ["EMPTY", "EMPTY", "A", "EMPTY"]가 나와야 합니다. ["A", "A", "EMPTY", "A"]나 ["EMPTY", "EMPTY", "A", "A"]
 print(solution(
     ["UPDATE 1 1 A", "UPDATE 2 2 B", "UPDATE 3 3 C", "UPDATE 4 4 D", "MERGE 1 1 2 2", "MERGE 3 3 4 4", "MERGE 1 1 4 4",
      "UNMERGE 3 3", "PRINT 1 1", "PRINT 2 2", "PRINT 3 3", "PRINT 4 4"]))
