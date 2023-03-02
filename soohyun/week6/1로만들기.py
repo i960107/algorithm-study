@@ -50,15 +50,40 @@ def solution_recursive(n: int) -> List[int]:
     return [n] + res
 
 
-def solution_dp(n: int) -> int:
-    pass
+def solution_dp(n: int) -> List[int]:
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [2, 1]
+    dp = [(i - 1, i - 1) for i in range(n + 1)]
+    dp[1] = (0, 1)
+    dp[2] = (1, 1)
+
+    # (연산횟수, 바로 이전 수)
+    for i in range(1, n + 1):
+        if i * 3 <= n and dp[i * 3][0] > dp[i][0] + 1:
+            dp[i * 3] = (dp[i][0] + 1, i)
+
+        if i * 2 <= n and dp[i * 2][0] > dp[i][0] + 1:
+            dp[i * 2] = (dp[i][0] + 1, i)
+
+        if i + 1 <= n and dp[i + 1][0] > dp[i][0] + 1:
+            dp[i + 1] = (dp[i][0] + 1, i)
+
+    answer = [n]
+    while True:
+        curr = answer[-1]
+        if curr == 1:
+            break
+        answer.append(dp[curr][1])
+    return answer
 
 
-n = int(input())
+N = int(input())
 # solution_greedy가 안되는 이유 -> 53
 # 한번 3으로 나누어떨어진다고 그 몫이 3의 배수인 것은 아님.
 
 # solution_recursive가 안되는 이유 -> 10. 당장 2로 나누는 것보다 1을 빼서 3으로 나누는게 더 나음.
-res = solution_recursive(n)
-print(len(res))
+res = solution_dp(N)
+print(len(res) - 1)
 print(*res)
