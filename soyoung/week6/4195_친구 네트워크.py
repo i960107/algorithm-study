@@ -1,28 +1,32 @@
 import sys
-sys.setrecursionlimit(10**5)
-def find_parent(parent, x):
+
+def find(x):
     if parent[x] != x:
-        parent[x] = find_parent(parent, parent[x])
+        parent[x] = find(parent[x])
     return parent[x]
 
-def union_parent(parent, a, b):
-    a = find_parent(parent, a)
-    b = find_parent(parent, b)
-    if a == b:
-        return
-    elif a < b:
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if a != b:
         parent[b] = a
-    else:
-        parent[a] = b
+        number[a] += number[b]
+    print(number[a])
 
-n, m = map(int, sys.stdin.readline().split())
-parent = [i for i in range(n+1)]
-for i in range(m):
-    num, a, b = map(int, sys.stdin.readline().split())
-    if num == 0:
-        union_parent(parent, a, b)
-    elif num == 1:
-        if find_parent(parent, a) == find_parent(parent, b):
-            print("YES")
-        else:
-            print("NO")
+t = int(sys.stdin.readline())
+
+for i in range(t):
+    n = int(sys.stdin.readline())
+    parent, number = {}, {}
+    for i in range(n):
+        a, b = map(str, sys.stdin.readline().split())
+        if a not in parent:
+            parent[a] = a
+            number[a] = 1
+        if b not in parent:
+            parent[b] = b
+            number[b] = 1
+        union(a,b)
+
+
+
