@@ -35,6 +35,7 @@ def solution(n: int, previous_ranks: List[int], m: int, changed: List[Tuple[int,
     # 불가능한 경우와 불확실한 경우
     # indegree가 이미 0인데 빼줘야하는 경우, 사이클이 생기는 경우.?
     # 확실한 순위를 찾을 수 없는 경우가 있나?
+    # 진입차수를 또 빼주는 경우는 없다.
     ranks = []
     while queue:
         curr = queue.popleft()
