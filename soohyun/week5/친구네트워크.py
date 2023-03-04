@@ -40,14 +40,20 @@ def union(parent: Dict[str, str], a: str, b: str, networks: Dict[str, int]):
     b = find(parent, b)
 
     # 중복으로 count 됨. a== b여도 합침?
-    if a < b:
-        parent[b] = a
-        networks[a] = networks.get(a, 1) + networks.get(b, 1)
-        return a
-    elif a > b:
-        parent[a] = b
-        networks[b] = networks.get(a, 1) + networks.get(b, 1)
-        return b
+    # if a < b:
+    #     parent[b] = a
+    #     networks[a] = networks.get(a, 1) + networks.get(b, 1)
+    #     print(networks[a])
+    # elif a > b:
+    #     parent[a] = b
+    #     networks[b] = networks.get(a, 1) + networks.get(b, 1)
+    #     print(networks[b])
+    if a == b:
+        return
+
+    parent[b] = a
+    networks[a] += networks[b]
+    print(networks[a])
 
 
 def get_group_size(groups: Dict[str, str], target: str) -> int:
@@ -67,11 +73,13 @@ for _ in range(T):
     networks = defaultdict(int)
     for _ in range(F):
         a, b = read().split()
+
         if a not in groups:
             groups[a] = a
+            networks[a] = 1
 
         if b not in groups:
             groups[b] = b
+            networks[b] = 1
 
-        p = union(groups, a, b, networks)
-        print(networks[p])
+        union(groups, a, b, networks)
