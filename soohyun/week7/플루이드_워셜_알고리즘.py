@@ -1,3 +1,6 @@
+from sys import stdin
+
+read = stdin.readline
 INF = int(1e9)
 
 n = int(input())
@@ -5,24 +8,24 @@ m = int(input())
 
 graph = [[INF] * (n + 1) for _ in range(n + 1)]
 
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if a == b:
-            graph[a][b] = 0
+# 자기 자신에게 가는 비용
+for i in range(1, n + 1):
+    graph[i][i] = 0
 
 for _ in range(m):
-    a, b, c = map(int, input().split())
+    a, b, c = map(int, read().split())
     graph[a][b] = c
 
 for k in range(1, n + 1):
     for a in range(1, n + 1):
         for b in range(1, n + 1):
+            # 연결된 길 혹은 자기 자신에게 가는 경우는 값 갱신되지 않음
             graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
 
-for a in range(1, n + 1):
-    for b in range(1, n + 1):
-        if graph[a][b] == INF:
-            print("INFINITY", end=' ')
+for i in range(1, n + 1):
+    for j in range(1, n + 1):
+        if graph[i][j] == 'INF':
+            print("INFINITY", end=" ")
         else:
-            print(graph[a][b], end=' ')
+            print(graph[i][j], end=" ")
     print()
