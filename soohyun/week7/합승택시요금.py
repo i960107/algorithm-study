@@ -1,10 +1,37 @@
 from typing import List
 
 
-# 최단 거리 아니고 경로를 아는 법.
-def solution(n: int, paths: List[List[int]], gates: List[int], summits: List[int]) -> List[int]:
-    pass
+def solution(n: int, s: int, a: int, b: int, fares: List[List[int]]) -> int:
+    # s -> a, s->b까지 가는 최단 거리는 다익스트라로 구할 수 있음
+    INF = int(1e9)
+
+    distance = [[INF] * (n + 1) for _ in range(n + 1)]
+
+    for i in range(1, n + 1):
+        distance[i][i] = 0
+
+    for u, v, f in fares:
+        distance[u][v] = f
+        distance[v][u] = f
+
+    for k in range(1, n + 1):
+        for u in range(1, n + 1):
+            for v in range(1, n + 1):
+                original = distance[u][v]
+                new = distance[u][k] + distance[k][v]
+                if new < original:
+                    distance[u][v] = new
+    final_fare = INF
+    for k in range(1, n + 1):
+        common = distance[s][k]
+        a_fare = distance[k][a]
+        b_fare = distance[k][b]
+        total_fare = common + a_fare + b_fare
+        if total_fare < final_fare:
+            final_fare = total_fare
+    return final_fare
 
 
-print(
-    solution(6, [[1, 2, 3], [2, 3, 5], [2, 4, 2], [2, 5, 4], [3, 4, 4], [4, 5, 3], [4, 6, 1], [5, 6, 1]], [1, 3], [5]))
+print(solution(6, 4, 6, 2,
+               [[4, 1, 10], [3, 5, 24], [5, 6, 2], [3, 1, 41], [5, 1, 24], [4, 6, 50], [2, 4, 66], [2, 3, 22],
+                [1, 6, 25]]))
