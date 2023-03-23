@@ -1,57 +1,35 @@
 from typing import List
-from collections import defaultdict
+
 import heapq
+from collections import defaultdict
 
 
 def solution(n: int, start: int, end: int, roads: List[List[int]], traps: List[int]) -> int:
-    traps = set(traps)
-    adj_out = defaultdict(list)
-    adj_in = defaultdict(list)
-
-    for u, v, w in roads:
-        adj_out[u].append((v, w))
-        adj_in[v].append((u, w))
-
-    # end 노드까지의 최단 거리를 구하기 위해서 다른 노드들 까지의 최단 거리를 기록해야하나?
-    # 그렇지 않으면 계속 큐에 추가됨?
     INF = int(1e9)
-    # distance = [INF] * (n + 1)
 
+    # in, out 버전 따로 기록해야하나
+    original = defaultdict(list)
+    alternative = defaultdict(list)
+    for u, v, c in roads:
+        original[u].append((v, c))
+        alternative[v].append((u, c))
+
+    traps = set(traps)
+
+    # untrapped, trapped
+    distance = [[INF, INF] for _ in range(n + 1)]
     queue = []
-    queue.append((0, start, set()))
+    # distance, node, is_trapped
+    queue.append((0, start, 0))
+    distance[start][0] = 0
 
     while queue:
-        dist, now, trapped = heapq.heappop(queue)
-
-        if now == end:
-            return dist
-
-        # if distance[now] < dist:
-        #     continue
-
-        if now in trapped:
-            nxts = adj_in[now]
-
-        else:
-            nxts = adj_out[now]
-
-        for nxt, cost in nxts:
-
-            nxt_dist = dist + cost
-
-            # 이미 갔던 곳도 배제할 수 없음...
-            # if distance[nxt] <= nxt_dist:
-            #     continue
-
-            nxt_trapped = trapped.copy()
-            if nxt in traps:
-                if nxt in nxt_trapped:
-                    nxt_trapped.remove(nxt)
-                else:
-                    nxt_trapped.add(nxt)
-
-            heapq.heappush(queue, (nxt_dist, nxt, nxt_trapped))
+        now_dist, now, is_trapped = heapq.heappop(queue)
+        if distance[now_dist][now] < is_trapped:
+            continue
+        for nxt, cost in in_adj[now]:
+            nxt_dist = now_dist + cost
 
 
-# print(solution(3, 1, 3, [[1, 2, 2], [3, 2, 3]], [2]))
-print(solution(4, 1, 4, [[1, 2, 1], [3, 2, 1]], [2, 3]))
+print(solution(3, 1, 3, [[1, 2, 2], [3, 2, 3]], [2]))
+print(solution(4, 1, 4, [[1, 2, 1], [3, 2, 1], [2, 4, 1]], [2, 3]))
