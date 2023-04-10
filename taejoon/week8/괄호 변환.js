@@ -7,6 +7,7 @@ function solution(p) {
   let a_count = 1;
   let b_count = 0;
   let idx = 1;
+
   while (a_count !== b_count) {
     if (p[idx] === a) a_count++;
     if (p[idx] === b) b_count++;
