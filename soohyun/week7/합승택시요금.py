@@ -2,7 +2,7 @@ from typing import List
 
 
 def solution(n: int, s: int, a: int, b: int, fares: List[List[int]]) -> int:
-    # s -> a, s->b까지 가는 최단 거리는 다익스트라로 구할 수 있음
+    # s -> a, 각각은  s->b까지 가는 최단 거리는 다익스트라로 구할 수 있음
     INF = int(1e9)
 
     distance = [[INF] * (n + 1) for _ in range(n + 1)]

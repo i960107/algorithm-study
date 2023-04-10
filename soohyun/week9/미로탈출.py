@@ -30,6 +30,8 @@ def solution(n: int, start: int, end: int, roads: List[List[int]], traps: List[i
 
         is_now_trapped = (now in trap_ids and (trapped & (1 << trap_ids[now])))
 
+        # trap on/off = bitmask ^ (1<<trap_id)
+        # is_trap_on = bitmaks & (1<<trap_id)
         for nxt, cost, is_reversed in adj[now]:
             is_nxt_trapped = (nxt in trap_ids and (trapped & (1 << trap_ids[nxt])))
             nxt_trapped = trapped
