@@ -19,7 +19,7 @@ for _ in range(m):
 for k in range(1, n + 1):
     for a in range(1, n + 1):
         for b in range(1, n + 1):
-            # 연결된 길 혹은 자기 자신에게 가는 경우는 값 갱신되지 않음
+            # 음의 간선 포함가능. 자기 자신에게 가는 길, 인접한 노드의 경우에도 값 갱신될 수 있음
             graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
 
 for i in range(1, n + 1):
