@@ -31,7 +31,6 @@ function getCombinations(array, length) {
       combinations.push(combination.join(''));
       return;
     }
-
     for (let i = start; i < array.length; i++) {
       generateCombination(i + 1, combination.concat(array[i]));
     }
