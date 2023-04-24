@@ -1,6 +1,7 @@
-def solution(s:str) -> int:
-    answer =  len(s)
-    for unit in range(1, len(s)//2 + 1):
+def solution(s: str) -> int:
+    answer = len(s)
+    # 최대 압축 단위 글자수의 반까지. 그 이상은 압축효과 없음
+    for unit in range(1, len(s) // 2 + 1):
         compressed = []
         temp = ""
         count = 0
@@ -17,11 +18,10 @@ def solution(s:str) -> int:
         if count > 1:
             compressed.append(str(count))
         compressed.append(temp)
-        
+
         result = ''.join(compressed)
-        
+
         if len(result) < answer:
             answer = len(result)
-                
+
     return answer
-        
