@@ -1,3 +1,4 @@
+#문자열 압축
 def solution(s):
     ans = len(s) 
 
@@ -20,7 +21,6 @@ def solution(s):
         if cnt == 1: 
             result += slice
         else: result += (str(cnt) + slice)
-            
         ans = min(ans, len(result))
     
     return ans
