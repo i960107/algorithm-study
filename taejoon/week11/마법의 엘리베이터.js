@@ -4,7 +4,6 @@ function solution(storey) {
   // p=1-4이면 아래로 이동
   // p=6-10층이면 위로 이동
   // p=5이면 십의자리가 5이상이면 위로, 5미만이면 아래로 이동
-
   while (storey > 0) {
     let p = storey % 10;
     if (p > 5) {
@@ -18,6 +17,5 @@ function solution(storey) {
     }
     storey = Math.floor(storey / 10);
   }
-
   return answer;
 }
