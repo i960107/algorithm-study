@@ -39,6 +39,7 @@ function solution(name) {
       nextIndex++;
     }
 
+    // 앞에서 뒤로 가는 경우와 뒤에서 앞으로 가는 경우 중 최소값을 구함
     leftRight = Math.min(
       leftRight,
       i + name.length - nextIndex + Math.min(i, name.length - nextIndex)
