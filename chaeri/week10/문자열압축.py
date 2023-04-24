@@ -1,4 +1,3 @@
-#문자열 압축
 def solution(s):
     ans = len(s) 
 
