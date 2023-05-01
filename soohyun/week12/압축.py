@@ -1,13 +1,13 @@
 from typing import List
 
 
-def solution(msg:str) -> List[int]:
+def solution(msg: str) -> List[int]:
     answer = []
-    d = {chr(i):i - ord("A") + 1 for i in range(ord("A"), ord("Z") + 1)}
+    d = {chr(i): i - ord("A") + 1 for i in range(ord("A"), ord("Z") + 1)}
     sequence = ord("Z") - ord("A") + 1
-    
+
     temp = ""
-    start, end = 0, 0 
+    start, end = 0, 0
     while end < len(msg):
         if temp + msg[end] not in d:
             sequence += 1
@@ -19,5 +19,5 @@ def solution(msg:str) -> List[int]:
         temp += msg[end]
         end += 1
     answer.append(d[temp])
-        
+
     return answer
