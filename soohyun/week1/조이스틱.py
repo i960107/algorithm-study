@@ -23,6 +23,32 @@ def solution(name: str) -> int:
     return movement
 
 
+def solution2(name):
+    answer = 0  # 조이스틱 조작횟수
+    check = len(name) - 1
+
+    found = False
+    for char in name:
+        if char != "A":
+            found = True
+
+    if not found:
+        return 0
+
+    for i, char in enumerate(name):
+        answer += min(ord(char) - ord('A'), ord('Z') - ord(char) + 1)  # 알파벳 변경 최솟값
+        next = i + 1
+        while next < len(name) and name[next] == 'A':
+            next += 1
+
+        if char == "A":
+            continue
+
+        check = min([check, 2 * i + len(name) - next, i + 2 * (len(name) - next)])  # 최솟값 개신
+    answer += check
+    return answer
+
+
 # print(solution("JEROEN"))
 # print(solution("JAN"))
 # print(solution("JAZ"))
